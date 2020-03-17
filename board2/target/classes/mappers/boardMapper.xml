@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.board.mappers.board">
+
+	<!-- 게시물 목록 -->
+	<select id="list" resultType="com.board.domain.BoardVO">
+		select
+			  busi_num as busiNum
+			, custom as custom
+			, shortt as shortt
+			, ceo as ceo
+			, charge_person as chargePerson
+			, busi_condition as busiCondition
+			, item as item
+			, post_num as postNum
+			, addrone as addrone
+			, addrtwo as addrtwo
+			, tel as tel
+			, fax as fax
+			, homepage as homepage
+			, co_yn as coYn
+			, foreign_yn as foreignYn
+			, tax_yn as taxYn
+			, country_eng as countryEng
+			, country_kor as countryKor
+			, special_relation as specialRelation
+			, trade_stop as tradeStop
+			, contract_period_s as contractPeriodS
+			, contract_period_e as contractPeriodE
+			, regi_info_man as regiInfoMan
+			, regi_info_date as regiInfoDate
+			, modi_info_man as modiInfoMan
+			, modi_info_date as modiInfoDate
+	 	from custom
+	</select>
+	
+	<!-- 게시물 작성 -->
+	<insert id="write" parameterType="com.board.domain.BoardVO">
+		insert into custom(
+			    busi_num,
+			    custom,
+			    shortt,
+			    ceo,
+			    charge_person,
+			    busi_condition,
+			    item,
+			    post_num,
+			    addrone,
+			    addrtwo,
+			    tel,
+			    fax,
+			    homepage,
+			    co_yn,
+			    foreign_yn,
+			    tax_yn,
+			    country_eng,
+			    country_kor,
+			    special_relation,
+			    trade_stop,
+			    contract_period_s,
+                contract_period_e,
+			    regi_info_man,
+			    regi_info_date,
+			    modi_info_man,
+			    modi_info_date
+		)values(
+			  #{busiNum,jdbcType=VARCHAR}
+			, #{custom,jdbcType=VARCHAR}
+			, #{shortt,jdbcType=VARCHAR}
+			, #{ceo,jdbcType=VARCHAR}
+			, #{chargePerson,jdbcType=VARCHAR}
+			, #{busiCondition,jdbcType=VARCHAR}
+			, #{item,jdbcType=VARCHAR}
+			, #{postNum,jdbcType=VARCHAR}
+			, #{addrone,jdbcType=VARCHAR}
+			, #{addrtwo,jdbcType=VARCHAR}
+			, #{tel,jdbcType=VARCHAR}
+			, #{fax,jdbcType=VARCHAR}
+			, #{homepage,jdbcType=VARCHAR}
+			, #{coYn,jdbcType=VARCHAR}
+			, #{foreignYn,jdbcType=VARCHAR}
+			, #{taxYn,jdbcType=VARCHAR}
+			, #{countryEng,jdbcType=VARCHAR}
+			, #{countryKor,jdbcType=VARCHAR}
+			, #{specialRelation,jdbcType=VARCHAR}
+			, #{tradeStop,jdbcType=VARCHAR}
+			, TO_DATE(#{contractPeriodS, jdbcType=VARCHAR}, 'MM/DD/YYYY')
+			, TO_DATE(#{contractPeriodE, jdbcType=VARCHAR}, 'MM/DD/YYYY')
+			, #{regiInfoMan,jdbcType=VARCHAR}
+			, SYSDATE
+			, #{modiInfoMan,jdbcType=VARCHAR}
+			, SYSDATE
+		)
+	</insert>
+	
+	<!-- //referenece -->
+	<!-- 게시물 조회 -->
+	<select id="view" parameterType="com.board.domain.BoardVO" resultType="com.board.domain.BoardVO">
+		select 
+			  busi_num as busiNum
+			, custom as custom
+			, shortt as shortt
+			, ceo as ceo
+			, charge_person as chargePerson
+			, busi_condition as busiCondition
+			, item as item
+			, post_num as postNum
+			, addrone as addrone
+			, addrtwo as addrtwo
+			, tel as tel
+			, fax as fax
+			, homepage as homepage
+			, co_yn as coYn
+			, foreign_yn as foreignYn
+			, tax_yn as taxYn
+			, country_eng as countryEng
+			, country_kor as countryKor
+			, special_relation as specialRelation
+			, trade_stop as tradeStop
+			, TO_CHAR(contract_period_s, 'MM/DD/YYYY') as contractPeriodS
+			, TO_CHAR(contract_period_e, 'MM/DD/YYYY') as contractPeriodE
+			, regi_info_man as regiInfoMan
+			, regi_info_date as regiInfoDate
+			, modi_info_man as modiInfoMan
+			, modi_info_date as modiInfoDate
+		from custom
+		where busi_num = #{busiNum,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 거래처 정보 조회 -->
+	<select id="viewTwo" parameterType="com.board.domain.BoardVO" resultType="com.board.domain.AccountVO">
+		SELECT
+		      a.factory as factory
+		    , a.trade_bank as tradeBank
+		    , a.account_num as accountNum
+		    , b.busi_num as busiNum
+		FROM account a JOIN custom b
+		ON a.busi_num = b.busi_num
+		WHERE a.busi_num = #{busiNum,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 게시물 수정 -->
+	<update id="modify" parameterType="com.board.domain.BoardVO" >
+		update custom set
+			custom = #{custom,jdbcType=VARCHAR}
+			, shortt = #{shortt,jdbcType=VARCHAR}
+			, ceo = #{ceo, jdbcType=VARCHAR}
+			, charge_person = #{chargePerson,jdbcType=VARCHAR}
+			, busi_condition = #{busiCondition,jdbcType=VARCHAR}
+			, item = #{item,jdbcType=VARCHAR}
+			, post_num = #{postNum,jdbcType=VARCHAR}
+			, addrone = #{addrone,jdbcType=VARCHAR}
+			, addrtwo = #{addrtwo,jdbcType=VARCHAR}
+			, tel = #{tel,jdbcType=VARCHAR}
+			, fax = #{fax,jdbcType=VARCHAR}
+			, homepage = #{homepage,jdbcType=VARCHAR}
+			, co_yn = #{coYn,jdbcType=VARCHAR}
+			, foreign_yn = #{foreignYn,jdbcType=VARCHAR}
+			, tax_yn = #{taxYn,jdbcType=VARCHAR}
+			, country_eng = #{countryEng,jdbcType=VARCHAR}
+			, country_kor = #{countryKor,jdbcType=VARCHAR}
+			, special_relation = #{specialRelation,jdbcType=VARCHAR}
+			, trade_stop = #{tradeStop,jdbcType=VARCHAR}
+			, contract_period_s = TO_DATE(#{contractPeriodS, jdbcType=VARCHAR}, 'MM/DD/YYYY')
+			, contract_period_e = TO_DATE(#{contractPeriodE, jdbcType=VARCHAR}, 'MM/DD/YYYY')
+			, modi_info_man = #{modiInfoMan,jdbcType=VARCHAR}
+			, modi_info_date = SYSDATE
+		where busi_num = #{busiNum}
+	</update>
+	
+	<!-- 게시물 삭제 -->
+	<delete id="delete" parameterType="com.board.domain.BoardVO">
+		delete
+		from custom
+		where busi_num = #{busiNum}
+	</delete>
+	
+	<select id="listSearch" parameterType="com.board.domain.Criteria" resultType="com.board.domain.BoardVO">
+		select
+			  busi_num as busiNum
+			, custom as custom
+			, shortt as shortt
+			, ceo as ceo
+			, charge_person as chargePerson
+			, busi_condition as busiCondition
+			, item as item
+			, post_num as postNum
+			, addrone as addrone
+			, addrtwo as addrtwo
+			, tel as tel
+			, fax as fax
+			, homepage as homepage
+			, co_yn as coYn
+			, foreign_yn as foreignYn
+			, tax_yn as taxYn
+			, country_eng as countryEng
+			, country_kor as countryKor
+			, special_relation as specialRelation
+			, trade_stop as tradeStop
+			, contract_period_s as contractPeriodS
+			, contract_period_e as contractPeriodE
+			, regi_info_man as regiInfoMan
+			, regi_info_date as regiInfoDate
+			, modi_info_man as modiInfoMan
+			, modi_info_date as modiInfoDate
+	 	from custom
+	 	<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="searchType=='busiNum' and keyword != null and keyword != '' ">
+				AND busi_num like '%'||#{keyword}||'%'
+			</if>
+		</trim>
+
+	 </select>
+
+</mapper>
